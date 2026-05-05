@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRIVIA GSK</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: calc(100% - 40px);
+            aspect-ratio: 1080 / 1920;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* PANTALLA DE INICIO */
+        .screen {
+            display: none;
+            flex: 1;
+            flex-direction: column;
+            padding: 30px;
+            overflow-y: auto;
+            animation: fadeIn 0.5s ease-in;
+            position: relative;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* INICIO */
+        #startScreen {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            color: white;
+        }
+
+        .logo-header {
+            width: 300px !important;
+            height: 100px !important;
+            margin: 0 auto 20px;
+            background: rgba(255, 255, 255, 0.95)!important;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;    
+            font-weight: bold;
+            color: #D71920;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .title {
+            font-family: "Oswald", sans-serif;
+            font-style: italic;
+            font-size: 10vw;
+            margin-bottom: 40px;
+            font-weight: bold;
+            position: relative;
+            color: rgb(255, 255, 255);z
+        }
+
+        .title::before {
+            content: attr(data-text);
+            position: absolute;
+            left: -2px;
+            text-shadow: -5px 0 magenta;
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            overflow: hidden;
+            top: 0;
+            width: 100%;
+            display: none;
+        }
+
+        .title::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 2px;
+            text-shadow: -5px 0 lightgreen;
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            overflow: hidden;
+            top: 0;
+            width: 100%;
+            display: none;
+        }
+
+        @keyframes glitch {
+            1% {
+                transform: rotateX(10deg) skewX(90deg);
+            }
+            2% {
+                transform: rotateX(0deg) skewX(0deg);
+            }
+        }
+
+        /* Animaciones clip-path deshabilitadas por rendimiento */
+
+        .title-glow {
+            text-shadow: 0 0 100px rgb(223, 191, 191);
+            color: transparent;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: "Oswald", sans-serif;
+            font-style: italic;
+            font-size: 5vw;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            z-index: -1;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-align: center;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-start {
+            background: white;
+            color: #E81E23;
+            margin-top: 20px;
+            margin-bottom: 100px;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-start:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* PANTALLA DE TRIVIA */
+        #triviaScreen {
+            background: #f8f9fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: -30px -30px 30px -30px;
+        }
+
+        .question-number {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timer.warning {
+            color: #ff6b6b;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+
+        .option.shake {
+            animation: shake 0.6s ease-in-out;
+        }
+
+
+
+        .question-text {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .option:hover {
+            border-color: #E81E23;
+            background: rgba(232, 30, 35, 0.05);
+        }
+
+        .option.selected {
+            border-color: #E81E23;
+            background: #E81E23;
+            color: white;
+        }
+
+        .option.correct {
+            border-color: #51cf66;
+            background: #51cf66;
+            color: white;
+        }
+
+        .option.incorrect {
+            border-color: #ff6b6b;
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .option:disabled {
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #E81E23 0%, #F25D18 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* PANTALLA DE RESULTADOS */
+        #resultScreen {
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            color: white;
+            justify-content: flex-start;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-header h2 {
+            font-family: "Oswald", sans-serif;
+            font-style: italic;
+            font-size: 2.5vw;
+            font-weight: bold;
+            position: relative;
+            color: rgb(255, 255, 255);
+            margin: 0;
+        }
+
+        .result-header h2::before {
+            content: attr(data-text);
+            position: absolute;
+            left: -2px;
+            text-shadow: -5px 0 magenta;
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            overflow: hidden;
+            top: 0;
+            width: 100%;
+            display: none;
+        }
+
+        .result-header h2::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 2px;
+            text-shadow: -5px 0 lightgreen;
+            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            overflow: hidden;
+            top: 0;
+            width: 100%;
+            display: none;
+        }
+
+        .result-header-glow {
+            text-shadow: 0 0 100px rgb(223, 191, 191);
+            color: transparent;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: "Oswald", sans-serif;
+            font-style: italic;
+            font-size: 2.5vw;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            z-index: -1;
+        }
+
+        .result-score {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .ranking-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .ranking-list {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-position {
+            font-weight: bold;
+            font-size: 16px;
+            min-width: 30px;
+        }
+
+        .ranking-name {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .ranking-score {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .ranking-item.highlight {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .user-position {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        .user-position-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .btn-restart {
+            background: white;
+            color: #E81E23;
+            margin-top: 20px;
+        }
+
+        .btn-restart:hover {
+            transform: scale(1.05);
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* LOGO Y FOOTER */
+        .logo-header {
+            width: 120px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: rgba(51, 50, 50, 0.95);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #E81E23;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+            padding: 15px;
+            margin-top: auto;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: justify;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px dotted white;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .result-footer {
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.4;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            text-align: justify;
+        }
+
+        /* FONDO CON CANVAS DE PARTÍCULAS */
+        html {
+            height: 100%;
+        }
+
+        canvas {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            will-change: contents;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(10, 10, 30, 0.7);
+            backdrop-filter: blur(12px);
+            padding: 12px 18px;
+            border-radius: 12px;
+            color: white;
+            font-size: 13px;
+            display: none;
+            gap: 16px;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            flex-wrap: wrap;
+        }
+
+        .controls button,
+        .controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .controls button {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        .controls button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .controls input[type="range"] {
+            width: 140px;
+        }
+
+        /* Circular Angle Knob */
+        .angle-knob {
+            width: 72px;
+            height: 72px;
+            position: relative;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .angle-knob:active {
+            cursor: grabbing;
+        }
+
+        .angle-knob svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+        }
+
+        .angle-knob .knob-circle {
+            fill: none;
+            stroke: #4488ff;
+            stroke-width: 9;
+        }
+
+        .angle-knob .knob-indicator {
+            stroke: #4488ff;
+            stroke-width: 7;
+            stroke-linecap: round;
+        }
+
+        .angle-knob .center-dot {
+            fill: #000;
+            stroke: rebeccapurple;
+            stroke-width: 2;
+        }
+
+        .angle-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            pointer-events: none;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
+        }
+
+        /* MODAL DE EXPLICACIÓN */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            border-top: 5px solid #E81E23;
+        }
+
+        .modal-content.correct {
+            border-top-color: #51cf66;
+        }
+
+        .modal-content.incorrect {
+            border-top-color: #ff6b6b;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #E81E23;
+            padding-bottom: 15px;
+        }
+
+        .modal-header.correct {
+            border-bottom-color: #51cf66;
+        }
+
+        .modal-header.incorrect {
+            border-bottom-color: #ff6b6b;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            color: #E81E23;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-explanation {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .modal-reference {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #E81E23;
+            border-radius: 5px;
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-continue {
+            background: #E81E23;
+            color: white;
+        }
+
+        .modal-btn-continue:hover {
+            background: #F25D18;
+            transform: scale(1.05);
+        }
+
+        /* POPUP DE COMUNIDAD GSK */
+        .community-popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .community-popup-overlay.active {
+            display: flex;
+        }
+
+        .community-popup-content {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 20px;
+            max-width: 700px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+            text-align: center;
+        }
+
+        .community-popup-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .community-popup-qr {
+            margin: 25px 0;
+        }
+
+        .community-popup-qr img {
+            max-width: 500px;
+            height: auto;
+        }
+
+        .community-popup-close {
+            background: #E81E23;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .community-popup-close:hover {
+            background: #F25D18;
+            transform: scale(1.05);
+        }
+
+        @media (max-aspect-ratio: 9/16) {
+            .container {
+                aspect-ratio: auto;
+                border-radius: 0;
+            }
+
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="controls">
+        <button id="pauseBtn">Pause</button>
+        <button id="resetBtn">Reset Particles</button>
+        <label>
+            Particles: <span id="particleCount">800</span>
+            <input type="range" id="particleSlider" min="500" max="10000" value="800" step="500">
+        </label>
+        <label>
+            Trail fade:
+            <input type="range" id="fadeSlider" min="10" max="120" value="85" step="5">
+        </label>
+        <label title="Base speed in dark areas">
+            Dark speed: <span id="darkSpeedVal">1.1</span>
+            <input type="range" id="darkSpeed" min="0.5" max="8" value="1.1" step="0.1">
+        </label>
+        <label title="Speed in bright areas (slower)">
+            Bright speed: <span id="brightSpeedVal">0.6</span>
+            <input type="range" id="brightSpeed" min="0.1" max="3" value="0.6" step="0.05">
+        </label>
+        <label style="flex-direction: column; gap: 4px;">
+            <div class="angle-knob" id="angleKnob">
+                <svg viewBox="0 0 100 100">
+                    <circle class="knob-circle" cx="50" cy="50" r="42" />
+                    <line id="indicator" class="knob-indicator" x1="50" y1="50" x2="82" y2="50" />
+                    <circle class="center-dot" cx="50" cy="50" r="7" />
+                </svg>
+                <div class="angle-label" id="angleValue">0°</div>
+            </div>
+            <span style="font-size:11px; opacity:0.8;">Direction</span>
+        </label>
+    </div>
+    <div class="container">
+        <!-- MODAL DE EXPLICACIÓN -->
+        <div id="explanationModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="modalTitle">Explicación</div>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-explanation" id="modalExplanation"></div>
+                    <div class="modal-reference" id="modalReference"></div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="modal-btn modal-btn-continue" onclick="continueToNext()">Continuar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE INICIO -->
+        <div id="startScreen" class="screen active">
+            <div class="logo-header">
+                <img src="GSK_logo_2022.svg.png" alt="Jemperli Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" loading="lazy">
+            </div>
+            <div style="position: relative; width: 100%; text-align: center; margin-bottom: 40px;">
+                <div class="title-glow">TRIVIA</div>
+                <div class="title" data-text="TRIVIA">TRIVIA</div>
+            </div>
+            <div class="subtitle">Demuestra tus conocimientos</div>
+            
+            <form id="nameForm" onsubmit="startTrivia(event)">
+                <div class="form-group">
+                    <label for="userName">Ingresa tu nombre:</label>
+                    <input 
+                        type="text" 
+                        id="userName" 
+                        placeholder="Tu nombre aquí" 
+                        required 
+                        maxlength="30"
+                    >
+                </div>
+                <button type="submit" class="btn btn-start">Comenzar Trivia</button>
+            </form>
+
+            <div style="margin: 30px 0; text-align: center;">
+                <img src="qr1.png" alt="QR Code" style="max-width: 150px; height: auto; margin-bottom: 10px;" loading="lazy">
+                <p style="font-size: 12px; color: rgba(255, 255, 255, 0.9); line-height: 1.4;">Escanee el código QR para acceder a la información para prescribir de Jemperli.</p>
+            </div>
+
+            <div class="footer">
+                <strong>Información de seguridad de Jemperli (dostarlimab)1</strong><br><br>
+                <strong>¹</strong> Jemperli está contraindicada a Hipersensibilidad al principio activo o a cualquiera de los excipientes de la fórmula.  <br><br>
+                <strong>Reacciones adversas:</strong> Muy frecuentes(≥ 1/10):Hipotiroidismo, Erupción, Piel seca, Pirexia, Aumento de la alanina aminotransferasa,Aumento de la aspartato aminotransferasa Frecuentes (≥1/100 a <1/10): Hipertiroidismo, Neumonitis, Colitis, Pancreatitis. Consulte la información para prescribir para más información.<br><br>
+                Consulte la información para prescribir local para obtener una descripción completa de las contraindicaciones, los eventos adversos, las interacciones, las advertencias y precauciones especiales asociadas con el uso de Jemperli.<br><br>
+                <strong>Referencia:</strong> 1. Jemperli. información para prescribir aprobada por ISP.<br><br>
+                La información completa para prescribir nuestros productos está a su disposición en nuestra página: <a href="http://www.gskpro.com/es-cl" target="_blank">http://www.gskpro.com/es-cl</a><br><br>
+                Más información de nuestros productos se encuentra disponible a través de nuestro Servicio de Información Médica en el correo electrónico: <strong>mila@gsk.com</strong><br><br>
+                Para reportar eventos adversos o quejas de producto por favor tome contacto con GSK por medio de: <strong>Teléfono:</strong> (56-2) 23829000 opción 4 o <strong>E-mail:</strong> <a href="mailto:farmacovigilancia.chile@gsk.com">farmacovigilancia.chile@gsk.com</a><br><br>
+                <strong>Dirección postal:</strong> GlaxoSmithKline Chile Ltda.: Av. Andrés Bello 2457 - Piso 20 (Oficinas 2001, 2003 y 2004), comuna de Providencia, ciudad de Santiago de Chile.<br><br>
+                Material exclusivo para entregar a profesionales de la salud que están habilitados a prescribir y/o dispensar en Chile. Derechos reservados para GSK.<br><br>
+                © 2026 Grupo de Compañías GSK. PM-CL-SGX-QST-260002 | Abril 2026
+            </div>
+        </div>
+
+        <!-- PANTALLA DE TRIVIA -->
+        <div id="triviaScreen" class="screen">
+            <div class="header">
+                <div class="question-number">Pregunta <span id="currentQuestion">1</span>/4</div>
+                <div class="timer" id="timer">⏱ 90s</div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div class="question-text" id="questionText"></div>
+
+            <div class="options" id="optionsContainer"></div>
+        </div>
+
+        <!-- POPUP DE COMUNIDAD GSK -->
+        <div id="communityPopup" class="community-popup-overlay">
+            <div class="community-popup-content">
+                <div class="community-popup-title"></div>
+                <div class="community-popup-qr">
+                    <img src="qr2.png" alt="QR Code" loading="lazy">
+                </div>
+                <button class="community-popup-close" onclick="closeCommunityPopup()">Cerrar</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS -->
+        <div id="resultScreen" class="screen">
+            <div class="result-header">
+                <div style="position: relative; width: 100%; text-align: center;">
+                    <div class="result-header-glow">¡Trivia Completada!</div>
+                    <h2 data-text="¡Trivia Completada!">¡Trivia Completada!</h2>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <div class="result-message">Tu puntuación:</div>
+                <div class="result-score" id="finalScore">0/4</div>
+            </div>
+
+            <div class="ranking-title">🏆 Ranking</div>
+            <div class="ranking-list" id="rankingList"></div>
+
+            <div class="user-position">
+                <div>Tu posición:</div>
+                <div class="user-position-number" id="userPosition">-</div>
+            </div>
+
+            <button class="btn btn-restart" onclick="restartTrivia()">Intentar de Nuevo</button>
+
+            <div class="result-footer">
+                <strong>Información de seguridad Jemperli (dostarlimab).</strong><br><br>
+                <strong>¹</strong> Jemperli está contraindicada a Hipersensibilidad al principio activo o a cualquiera de los excipientes de la fórmula.<br><br>
+                <strong>Reacciones adversas:</strong> Muy frecuentes(≥ 1/10):Hipotiroidismo, Erupción, Piel seca, Pirexia, Aumento de la alanina aminotransferasa,Aumento de la aspartato aminotransferasa Frecuentes (≥1/100 a <1/10): Hipertiroidismo, Neumonitis, Colitis, Pancreatitis.<br><br>
+                Consulte la información para prescribir local para obtener una descripción completa de las contraindicaciones, los eventos adversos, las interacciones, las advertencias y precauciones especiales asociadas con el uso de Jemperli.<br><br>
+                <strong>Referencia:</strong> 1. Jemperli información para prescribir aprobada por ISP.<br><br>
+                La información completa para prescribir nuestros productos está a su disposición en nuestra página: <a href="http://www.gskpro.com/es-cl" target="_blank">http://www.gskpro.com/es-cl</a><br><br>
+                Más información de nuestros productos se encuentra disponible a través de nuestro Servicio de Información Médica en el correo electrónico: <strong>mila@gsk.com</strong><br><br>
+                Para reportar eventos adversos o quejas de producto por favor tome contacto con GSK por medio de: <strong>Teléfono:</strong> (56-2) 23829000 opción 4 o <strong>E-mail:</strong> <a href="mailto:farmacovigilancia.chile@gsk.com">farmacovigilancia.chile@gsk.com</a><br><br>
+                <strong>Dirección postal:</strong> GlaxoSmithKline Chile Ltda.: Av. Andrés Bello 2457 - Piso 20 (Oficinas 2001, 2003 y 2004), comuna de Providencia, ciudad de Santiago de Chile.<br><br>
+                Material exclusivo para entregar a profesionales de la salud que están habilitados a prescribir y/o dispensar en Chile. Derechos reservados para GSK.<br><br>
+                © 2026 Grupo de Compañías GSK. PM-CL-SGX-QST-260002 | Abril 2026
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Tras 3 años de seguimiento del estudio RUBY Parte I, ¿qué mejora en la mediana de OS se reportó con DOSTARLIMAB + CP vs placebo + CP?",
+                options: [
+                    "16.4 meses (44.6 vs 28.2 meses)",
+                    "10.2 meses (38.4 vs 28.2 meses)",
+                    "22.0 meses (50.2 vs 28.2 meses)"
+                ],
+                correct: 0,
+                explanation: "",
+                reference: "1. Powell MA, et al. Overall survival in patients with endometrial cancer treated with dostarlimab plus carboplatin-paclitaxel in the randomised ENGOT-EN6/GOG-3031/RUBY trial. Ann Oncol. 2024;35(8):728-738. 2. Powell MA, et al. Overall survival in patients with primary advanced or recurrent endometrial cancer treated with dostarlimab plus chemotherapy in the ENGOT-EN6-NSGO-GOG-3031/RUBY trial. Presented at SGO. 16-18 March 2024; San Diego, USA"
+            },
+            {
+                question: "En el análisis de OS a 4 años del estudio RUBY en pacientes con cáncer de endometrio  dMMR/MSI-H, ¿qué HR se mostró para Dostarlimab + CP vs placebo + CP?",
+                options: [
+                    "HR 0.34 (95% CI, 0.19–0.63)",
+                    "HR 0.55 (95% CI, 0.30–0.90)",
+                    "HR 0.12 (95% CI, 0.04–0.36)"
+                ],
+                correct: 0,
+                explanation: "",
+                reference: "Powell MA, et al. Four-Year Survival Outcomes with Dostarlimab Plus Chemotherapy in dMMR/MSI-H Primary Advanced or Recurrent Endometrial Cancer in the ENGOT-EN6-NSGO/GOG-3031/RUBY Trial. 10-13 April 2026; San Juan, PR"
+            },
+            {
+                question: "En la población dMMR/MSI-H, ¿qué afirmación resume mejor el hallazgo de seguridad a largo plazo respecto a irAEs relacionados con Dostarlimab?",
+                options: [
+                    "No se identificaron nuevas señales de seguridad y la incidencia de irAEs se mantuvo baja con mayor seguimiento",
+                    "Aparecieron nuevas señales de seguridad inmunomediadas a partir del año 3",
+                    "La incidencia global de irAEs aumentó de forma marcada y sostenida año a año"
+                ],
+                correct: 0,
+                explanation: "",
+                reference: "Powell MA, et al. Four-Year Survival Outcomes with Dostarlimab Plus Chemotherapy in dMMR/MSI-H Primary Advanced or Recurrent Endometrial Cancer in the ENGOT-EN6-NSGO/GOG-3031/RUBY Trial. 10-13 April 2026; San Juan, PR"
+            },
+            {
+                question: "En la población dMMR/MSI-H, ¿qué cambio se reportó en la mediana de PFS con Dostarlimab + CP frente a placebo + CP (IA1, ~2 años de seguimiento)?",
+                options: [
+                    "Mejora de 3.9 meses (11.8 vs 7.9 meses)",
+                    "Mejora de 6.0 meses (13.9 vs 7.9 meses)",
+                    "Mejora de 1.9 meses (9.8 vs 7.9 meses)"
+                ],
+                correct: 0,
+                explanation: "",
+                reference: "1.	Mirza MR, et al. N Engl J Med. 2023;388(23):2145-2158. 2. Mirza MR, et al. Presented at ESMO Virtual Plenary. 14-15 September 2023. 3. JEMPERLI Summary of Product Characteristics."
+            },
+
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let userName = "";
+        let timeLeft = 90;
+        let timerInterval = null;
+        let answers = [];
+        let isShowingModal = false;
+
+        function startTrivia(event) {
+            event.preventDefault();
+            userName = document.getElementById("userName").value.trim();
+            
+            if (!userName) {
+                alert("Por favor ingresa tu nombre");
+                return;
+            }
+
+            document.getElementById("startScreen").classList.remove("active");
+            document.getElementById("triviaScreen").classList.add("active");
+            
+            // Pausar partículas para mejorar rendimiento
+            isPaused = true;
+            
+            currentQuestion = 0;
+            score = 0;
+            answers = [];
+            timeLeft = 90;
+            
+            startTimer();
+            loadQuestion();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+
+                if (timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    finishTrivia();
+                }
+            }, 1000);
+        }
+
+        function updateTimer() {
+            const timerElement = document.getElementById("timer");
+            timerElement.textContent = `⏱ ${timeLeft}s`;
+            
+            if (timeLeft <= 10) {
+                timerElement.classList.add("warning");
+            } else {
+                timerElement.classList.remove("warning");
+            }
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById("currentQuestion").textContent = currentQuestion + 1;
+            document.getElementById("questionText").textContent = question.question;
+
+            const progressPercentage = (currentQuestion / questions.length) * 100;
+            document.getElementById("progressBar").style.width = progressPercentage + "%";
+
+            const optionsContainer = document.getElementById("optionsContainer");
+            optionsContainer.innerHTML = "";
+
+            question.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.className = "option";
+                button.textContent = option;
+                button.onclick = () => selectOption(index);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectOption(index) {
+            const question = questions[currentQuestion];
+            const options = document.querySelectorAll(".option");
+            
+            options.forEach(opt => opt.disabled = true);
+
+            const isCorrect = index === question.correct;
+
+            if (isCorrect) {
+                options[index].classList.add("correct");
+                options[index].classList.add("shake");
+                score++;
+            } else {
+                options[index].classList.add("incorrect");
+                options[question.correct].classList.add("correct");
+                options[question.correct].classList.add("shake");
+            }
+
+            answers.push(isCorrect);
+            isShowingModal = true;
+
+            // Mostrar modal con explicación
+            showExplanationModal(question, isCorrect);
+        }
+
+        function showExplanationModal(question, isCorrect) {
+            const modalContent = document.querySelector(".modal-content");
+            const modalHeader = document.querySelector(".modal-header");
+            
+            // Limpiar clases anteriores
+            modalContent.classList.remove("correct", "incorrect");
+            modalHeader.classList.remove("correct", "incorrect");
+            
+            // Agregar clase según si es correcta
+            if (isCorrect) {
+                modalContent.classList.add("correct");
+                modalHeader.classList.add("correct");
+            } else {
+                modalContent.classList.add("incorrect");
+                modalHeader.classList.add("incorrect");
+            }
+            
+            document.getElementById("modalTitle").textContent = isCorrect ? "Respuesta Correcta" : "Respuesta Incorrecta";
+            document.getElementById("modalExplanation").textContent = question.explanation;
+            document.getElementById("modalReference").innerHTML = `<strong>Referencia:</strong> ${question.reference}`;
+            document.getElementById("explanationModal").classList.add("active");
+        }
+
+        function closeModal() {
+            document.getElementById("explanationModal").classList.remove("active");
+            isShowingModal = false;
+        }
+
+        function continueToNext() {
+            closeModal();
+            
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    loadQuestion();
+                } else {
+                    finishTrivia();
+                }
+            }, 300);
+        }
+
+
+        function finishTrivia() {
+            clearInterval(timerInterval);
+            document.getElementById("triviaScreen").classList.remove("active");
+            document.getElementById("resultScreen").classList.add("active");
+
+            saveResult();
+            displayResults();
+
+            // Mostrar popup de comunidad GSK después de 5 segundos
+            setTimeout(() => {
+                document.getElementById("communityPopup").classList.add("active");
+            }, 5000);
+        }
+
+        function saveResult() {
+            let ranking = JSON.parse(localStorage.getItem("rankingJemperli")) || [];
+            
+            ranking.push({
+                name: userName,
+                score: score,
+                date: new Date().toLocaleDateString()
+            });
+
+            ranking.sort((a, b) => b.score - a.score);
+            localStorage.setItem("rankingJemperli", JSON.stringify(ranking));
+        }
+
+        function displayResults() {
+            document.getElementById("finalScore").textContent = `${score}/4`;
+
+            const ranking = JSON.parse(localStorage.getItem("rankingJemperli")) || [];
+            const rankingList = document.getElementById("rankingList");
+            rankingList.innerHTML = "";
+
+            let userPosition = 0;
+            ranking.forEach((entry, index) => {
+                const div = document.createElement("div");
+                div.className = "ranking-item";
+                
+                if (entry.name === userName) {
+                    div.classList.add("highlight");
+                    userPosition = index + 1;
+                }
+
+                div.innerHTML = `
+                    <span class="ranking-position">#${index + 1}</span>
+                    <span class="ranking-name">${entry.name}</span>
+                    <span class="ranking-score">${entry.score}/4</span>
+                `;
+
+                rankingList.appendChild(div);
+            });
+
+            document.getElementById("userPosition").textContent = `#${userPosition}`;
+        }
+
+        function restartTrivia() {
+            currentQuestion = 0;
+            score = 0;
+            timeLeft = 60;
+            document.getElementById("resultScreen").classList.remove("active");
+            document.getElementById("communityPopup").classList.remove("active");
+            document.getElementById("startScreen").classList.add("active");
+            document.getElementById("userName").value = "";
+            document.getElementById("userName").focus();
+            
+            // Reactivar partículas
+            isPaused = false;
+        }
+
+        function closeCommunityPopup() {
+            document.getElementById("communityPopup").classList.remove("active");
+        }
+
+        // ====================== PARTICLES BACKGROUND SYSTEM ======================
+        let userBase64SVG = "";
+        const demoSVG = `<svg xmlns='http://www.w3.org/2000/svg' height='1000' width='1000' viewbox='0 0 1000 1000'>
+            <path fill='#aaa' d='M 500 0 A 100 100 90 0 1 500 1000 A 100 100 90 0 1 500 0 M 500 300 A 100 100 90 0 0 500 700 A 100 100 90 0 0 500 300' />
+            <path fill='#ccc' d='M 200 0 H 800 L 500 500 Z M 500 100 A 100 100 90 0 0 500 300 A 100 100 90 0 0 500 100' />
+            <path fill='#ccc' d='M 500 500 L 800 1000 H 200 Z M 500 700 A 100 100 90 0 0 500 900 A 100 100 90 0 0 500 700' />
+            <path fill='#aaa' d='M 400 450 H 600 V 550 H 400 Z' />
+        </svg>`;
+
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d", { alpha: true });
+        let width = 0, height = 0;
+        let particles = [];
+        let brightnessGrid = [];
+        let cellSize = 8;
+        let cols = 0, rows = 0;
+        let img = new Image();
+        let isPaused = false;
+        let flowAngle = 0;
+        let isAnimating = false;
+        let animationRequestId = null;
+
+        const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+            }
+            update() {
+                const col = Math.max(0, Math.min(cols - 1, Math.floor(this.x / cellSize)));
+                const row = Math.max(0, Math.min(rows - 1, Math.floor(this.y / cellSize)));
+                const brightness = brightnessGrid[row] ? brightnessGrid[row][col] : 0;
+                const darkSpeed = parseFloat(document.getElementById("darkSpeed").value) + randInt(-10, 10) / 10;
+                const brightSpeed = parseFloat(document.getElementById("brightSpeed").value);
+                const speed = darkSpeed * (1 - brightness) + brightSpeed * brightness;
+                const rad = (flowAngle * Math.PI) / 180;
+                this.x += Math.cos(rad) * speed;
+                this.y += Math.sin(rad) * speed;
+                if (this.x > width + 60) this.x = -60;
+                if (this.x < -60) this.x = width + 60;
+                if (this.y > height + 60) this.y = -60;
+                if (this.y < -60) this.y = height + 60;
+            }
+            draw() {
+                const alpha = Math.max(0.35, 1.8 - 3 * 0.35);
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = "#D71920";
+                ctx.fillRect(this.x, this.y, 3, 3);
+                ctx.restore();
+            }
+        }
+
+        function computeBrightnessGrid() {
+            const off = document.createElement("canvas");
+            off.width = width;
+            off.height = height;
+            const octx = off.getContext("2d");
+            octx.drawImage(img, 0, 0, width, height);
+            const data = octx.getImageData(0, 0, width, height).data;
+            cols = Math.ceil(width / cellSize);
+            rows = Math.ceil(height / cellSize);
+            brightnessGrid = Array.from({ length: rows }, () => Array(cols).fill(0));
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const sy = r * cellSize, sx = c * cellSize;
+                    const ey = Math.min(sy + cellSize, height);
+                    const ex = Math.min(sx + cellSize, width);
+                    // Sample fewer pixels for faster computation
+                    let sum = 0, count = 0;
+                    const step = Math.max(1, Math.floor(cellSize / 4));
+                    for (let y = sy; y < ey; y += step) {
+                        for (let x = sx; x < ex; x += step) {
+                            const i = (y * width + x) * 4;
+                            const lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+                            sum += lum;
+                            count++;
+                        }
+                    }
+                    brightnessGrid[r][c] = count ? sum / count / 255 : 0;
+                }
+            }
+        }
+
+        function resizeCanvas() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            if (img.complete) computeBrightnessGrid();
+        }
+
+        function animateParticles() {
+            if (isPaused) {
+                animationRequestId = requestAnimationFrame(animateParticles);
+                return;
+            }
+            ctx.globalAlpha = parseFloat(document.getElementById("fadeSlider").value) / 1000;
+            ctx.fillStyle = "#05050f";
+            ctx.fillRect(0, 0, width, height);
+            ctx.globalAlpha = 1;
+            for (let p of particles) {
+                p.update();
+                p.draw();
+            }
+            animationRequestId = requestAnimationFrame(animateParticles);
+        }
+
+        function setupAngleKnob() {
+            const knob = document.getElementById("angleKnob");
+            const indicator = document.getElementById("indicator");
+            const angleDisplay = document.getElementById("angleValue");
+            let isDragging = false;
+
+            function updateKnob(angleDeg) {
+                flowAngle = ((angleDeg % 360) + 360) % 360;
+                const rad = (flowAngle * Math.PI) / 180;
+                const len = 34;
+                const x2 = 50 + len * Math.cos(rad);
+                const y2 = 50 + len * Math.sin(rad);
+                indicator.setAttribute("x2", x2);
+                indicator.setAttribute("y2", y2);
+                angleDisplay.textContent = Math.round(flowAngle) + "°";
+            }
+
+            function getAngleFromEvent(e) {
+                const rect = knob.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const clientX = e.clientX !== undefined ? e.clientX : e.touches[0].clientX;
+                const clientY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+                let angle = (Math.atan2(clientY - cy, clientX - cx) * 180) / Math.PI;
+                return (angle + 360) % 360;
+            }
+
+            function startDrag(e) {
+                isDragging = true;
+                e.preventDefault();
+                const angle = getAngleFromEvent(e);
+                updateKnob(angle);
+            }
+
+            function duringDrag(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const angle = getAngleFromEvent(e);
+                updateKnob(angle);
+            }
+
+            function endDrag() {
+                isDragging = false;
+            }
+
+            knob.addEventListener("mousedown", startDrag);
+            document.addEventListener("mousemove", duringDrag);
+            document.addEventListener("mouseup", endDrag);
+            knob.addEventListener("touchstart", startDrag, { passive: false });
+            document.addEventListener("touchmove", duringDrag, { passive: false });
+            document.addEventListener("touchend", endDrag);
+            updateKnob(270);
+        }
+
+        function initParticles() {
+            if (userBase64SVG.trim()) {
+                img.src = `data:image/svg+xml;base64,${userBase64SVG}`;
+            } else {
+                img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(demoSVG)}`;
+            }
+
+            window.addEventListener("resize", resizeCanvas);
+            document.getElementById("pauseBtn").addEventListener("click", () => {
+                isPaused = !isPaused;
+                document.getElementById("pauseBtn").textContent = isPaused ? "Resume" : "Pause";
+            });
+            document.getElementById("resetBtn").addEventListener("click", () => {
+                particles.forEach((p) => p.reset());
+            });
+
+            const pSlider = document.getElementById("particleSlider");
+            const pCount = document.getElementById("particleCount");
+            pSlider.addEventListener("input", () => {
+                const target = parseInt(pSlider.value);
+                pCount.textContent = target;
+                while (particles.length < target) particles.push(new Particle());
+                while (particles.length > target) particles.pop();
+            });
+
+            const darkSlider = document.getElementById("darkSpeed");
+            const brightSlider = document.getElementById("brightSpeed");
+            const darkVal = document.getElementById("darkSpeedVal");
+            const brightVal = document.getElementById("brightSpeedVal");
+            darkSlider.addEventListener("input", () => (darkVal.textContent = parseFloat(darkSlider.value).toFixed(1)));
+            brightSlider.addEventListener("input", () => (brightVal.textContent = parseFloat(brightSlider.value).toFixed(1)));
+
+            document.querySelectorAll('input[type="range"]').forEach((slider) => {
+                slider.addEventListener("touchstart", () => {}, { passive: true });
+            });
+
+            setupAngleKnob();
+
+            img.onload = () => {
+                resizeCanvas();
+                computeBrightnessGrid();
+                const target = parseInt(pSlider.value);
+                particles = [];
+                for (let i = 0; i < target; i++) particles.push(new Particle());
+                animateParticles();
+            };
+        }
+
+        initParticles();
+    </script>
+</body>
+</html>
