@@ -16,7 +16,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -62,7 +62,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             color: white;
         }
 
@@ -96,7 +96,7 @@
             position: absolute;
             left: -2px;
             text-shadow: -5px 0 magenta;
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             overflow: hidden;
             top: 0;
             width: 100%;
@@ -108,7 +108,7 @@
             position: absolute;
             left: 2px;
             text-shadow: -5px 0 lightgreen;
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             overflow: hidden;
             top: 0;
             width: 100%;
@@ -188,7 +188,7 @@
 
         .btn-start {
             background: white;
-            color: #E81E23;
+            color: #C81E78;
             margin-top: 20px;
             margin-bottom: 100px;
         }
@@ -196,6 +196,7 @@
         .btn-start:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: #E8E8E8;
         }
 
         .btn-start:disabled {
@@ -210,7 +211,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             color: white;
             padding: 20px;
             border-radius: 0;
@@ -283,13 +284,13 @@
         }
 
         .option:hover {
-            border-color: #E81E23;
-            background: rgba(232, 30, 35, 0.05);
+            border-color: #C81E78;
+            background: rgba(200, 30, 120, 0.05);
         }
 
         .option.selected {
-            border-color: #E81E23;
-            background: #E81E23;
+            border-color: #C81E78;
+            background: #C81E78;
             color: white;
         }
 
@@ -320,14 +321,14 @@
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(90deg, #C81E78 0%, #D81E7E 100%);
             width: 0%;
             transition: width 0.3s ease;
         }
 
         /* PANTALLA DE RESULTADOS */
         #resultScreen {
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             color: white;
             justify-content: flex-start;
         }
@@ -352,7 +353,7 @@
             position: absolute;
             left: -2px;
             text-shadow: -5px 0 magenta;
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             overflow: hidden;
             top: 0;
             width: 100%;
@@ -364,7 +365,7 @@
             position: absolute;
             left: 2px;
             text-shadow: -5px 0 lightgreen;
-            background: linear-gradient(135deg, #E81E23 0%, #F25D18 100%);
+            background: linear-gradient(135deg, #C81E78 0%, #D81E7E 100%);
             overflow: hidden;
             top: 0;
             width: 100%;
@@ -470,8 +471,15 @@
             margin-top: 20px;
         }
 
+        .btn-restart {
+            background: white;
+            color: #C81E78;
+            margin-top: 20px;
+        }
+
         .btn-restart:hover {
             transform: scale(1.05);
+            background: #E8E8E8;
         }
 
         /* SCROLLBAR */
@@ -506,14 +514,14 @@
             padding: 0px;
             font-size: 32px;
             font-weight: bold;
-            color: #E81E23;
+            color: #C81E78;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .footer {
             font-size: 9px;
             color: rgba(255, 255, 255, 0.9);
-            line-height: 1.5;
+            line-height: 1.3;
             padding: 15px;
             margin-top: auto;
             background: rgba(0, 0, 0, 0.2);
@@ -521,6 +529,32 @@
             text-align: justify;
             max-height: 300px;
             overflow-y: auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-content {
+            flex: 1;
+        }
+
+        .footer-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            flex-shrink: 0;
+        }
+
+        .footer-qr img {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+
+        .footer-qr p {
+            font-size: 8px;
+            margin: 0;
         }
 
         .footer a {
@@ -536,7 +570,7 @@
         .result-footer {
             font-size: 8px;
             color: rgba(255, 255, 255, 0.85);
-            line-height: 1.4;
+            line-height: 1.3;
             padding: 12px;
             background: rgba(0, 0, 0, 0.15);
             border-radius: 8px;
@@ -544,6 +578,26 @@
             max-height: 200px;
             overflow-y: auto;
             text-align: justify;
+            display: flex;
+            gap: 12px;
+        }
+
+        .result-footer-content {
+            flex: 1;
+        }
+
+        .result-footer-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .result-footer-qr img {
+            max-width: 100px;
+            height: auto;
         }
 
         /* FONDO CON CANVAS DE PARTÍCULAS */
@@ -684,7 +738,7 @@
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideIn 0.3s ease;
-            border-top: 5px solid #E81E23;
+            border-top: 5px solid #C81E78;
         }
 
         .modal-content.correct {
@@ -711,7 +765,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid #E81E23;
+            border-bottom: 2px solid #C81E78;
             padding-bottom: 15px;
         }
 
@@ -744,7 +798,7 @@
         }
 
         .modal-close:hover {
-            color: #E81E23;
+            color: #C81E78;
         }
 
         .modal-body {
@@ -761,7 +815,7 @@
         .modal-reference {
             background: #f8f9fa;
             padding: 15px;
-            border-left: 4px solid #E81E23;
+            border-left: 4px solid #C81E78;
             border-radius: 5px;
             font-size: 13px;
             color: #666;
@@ -787,12 +841,12 @@
         }
 
         .modal-btn-continue {
-            background: #E81E23;
+            background: #C81E78;
             color: white;
         }
 
         .modal-btn-continue:hover {
-            background: #F25D18;
+            background: #D81E7E;
             transform: scale(1.05);
         }
 
@@ -843,7 +897,7 @@
         }
 
         .community-popup-close {
-            background: #E81E23;
+            background: #C81E78;
             color: white;
             border: none;
             padding: 12px 30px;
@@ -857,7 +911,7 @@
         }
 
         .community-popup-close:hover {
-            background: #F25D18;
+            background: #D81E7E;
             transform: scale(1.05);
         }
 
@@ -933,7 +987,7 @@
                 <div class="title-glow">TRIVIA</div>
                 <div class="title" data-text="TRIVIA">TRIVIA</div>
             </div>
-            <div class="subtitle">Demuestra tus conocimientos</div>
+            <div class="subtitle">¿Qué tanto conoce los resultados del estudio RUBY Parte 1?</div>
             
             <form id="nameForm" onsubmit="startTrivia(event)">
                 <div class="form-group">
@@ -949,23 +1003,25 @@
                 <button type="submit" class="btn btn-start">Comenzar Trivia</button>
             </form>
 
-            <div style="margin: 30px 0; text-align: center;">
-                <img src="qr1.png" alt="QR Code" style="max-width: 150px; height: auto; margin-bottom: 10px;" loading="lazy">
-                <p style="font-size: 12px; color: rgba(255, 255, 255, 0.9); line-height: 1.4;">Escanee el código QR para acceder a la información para prescribir de Jemperli.</p>
+            <div style="margin: 30px 0; display: flex; gap: 15px; align-items: flex-start;">
+                <img src="qr1.png" alt="QR Code" style="max-width: 120px; height: auto; flex-shrink: 0;" loading="lazy">
+                <p style="font-size: 12px; color: rgba(255, 255, 255, 0.9); line-height: 1.4; margin: 0; flex: 1;">Escanee el código QR para acceder a la información para prescribir de Jemperli.</p>
             </div>
 
             <div class="footer">
-                <strong>Información de seguridad de Jemperli (dostarlimab)1</strong><br><br>
-                <strong>¹</strong> Jemperli está contraindicada a Hipersensibilidad al principio activo o a cualquiera de los excipientes de la fórmula.  <br><br>
-                <strong>Reacciones adversas:</strong> Muy frecuentes(≥ 1/10):Hipotiroidismo, Erupción, Piel seca, Pirexia, Aumento de la alanina aminotransferasa,Aumento de la aspartato aminotransferasa Frecuentes (≥1/100 a <1/10): Hipertiroidismo, Neumonitis, Colitis, Pancreatitis. Consulte la información para prescribir para más información.<br><br>
-                Consulte la información para prescribir local para obtener una descripción completa de las contraindicaciones, los eventos adversos, las interacciones, las advertencias y precauciones especiales asociadas con el uso de Jemperli.<br><br>
-                <strong>Referencia:</strong> 1. Jemperli. información para prescribir aprobada por ISP.<br><br>
-                La información completa para prescribir nuestros productos está a su disposición en nuestra página: <a href="http://www.gskpro.com/es-cl" target="_blank">http://www.gskpro.com/es-cl</a><br><br>
-                Más información de nuestros productos se encuentra disponible a través de nuestro Servicio de Información Médica en el correo electrónico: <strong>mila@gsk.com</strong><br><br>
-                Para reportar eventos adversos o quejas de producto por favor tome contacto con GSK por medio de: <strong>Teléfono:</strong> (56-2) 23829000 opción 4 o <strong>E-mail:</strong> <a href="mailto:farmacovigilancia.chile@gsk.com">farmacovigilancia.chile@gsk.com</a><br><br>
-                <strong>Dirección postal:</strong> GlaxoSmithKline Chile Ltda.: Av. Andrés Bello 2457 - Piso 20 (Oficinas 2001, 2003 y 2004), comuna de Providencia, ciudad de Santiago de Chile.<br><br>
-                Material exclusivo para entregar a profesionales de la salud que están habilitados a prescribir y/o dispensar en Chile. Derechos reservados para GSK.<br><br>
-                © 2026 Grupo de Compañías GSK. PM-CL-SGX-QST-260002 | Abril 2026
+                <div class="footer-content">
+                    <strong>Información de seguridad de Jemperli (dostarlimab)1</strong><br>
+                    <strong>¹</strong> Jemperli está contraindicada a Hipersensibilidad al principio activo o a cualquiera de los excipientes de la fórmula.<br>
+                    <strong>Reacciones adversas:</strong> Muy frecuentes(≥ 1/10):Hipotiroidismo, Erupción, Piel seca, Pirexia, Aumento de la alanina aminotransferasa,Aumento de la aspartato aminotransferasa Frecuentes (≥1/100 a <1/10): Hipertiroidismo, Neumonitis, Colitis, Pancreatitis. Consulte la información para prescribir para más información.<br>
+                    Consulte la información para prescribir local para obtener una descripción completa de las contraindicaciones, los eventos adversos, las interacciones, las advertencias y precauciones especiales asociadas con el uso de Jemperli.<br>
+                    <strong>Referencia:</strong> 1. Jemperli. información para prescribir aprobada por ISP.<br>
+                    La información completa para prescribir nuestros productos está a su disposición en nuestra página: <a href="http://www.gskpro.com/es-cl" target="_blank">http://www.gskpro.com/es-cl</a><br>
+                    Más información de nuestros productos se encuentra disponible a través de nuestro Servicio de Información Médica en el correo electrónico: <strong>mila@gsk.com</strong><br>
+                    Para reportar eventos adversos o quejas de producto por favor tome contacto con GSK por medio de: <strong>Teléfono:</strong> (56-2) 23829000 opción 4 o <strong>E-mail:</strong> <a href="mailto:farmacovigilancia.chile@gsk.com">farmacovigilancia.chile@gsk.com</a><br>
+                    <strong>Dirección postal:</strong> GlaxoSmithKline Chile Ltda.: Av. Andrés Bello 2457 - Piso 20 (Oficinas 2001, 2003 y 2004), comuna de Providencia, ciudad de Santiago de Chile.<br>
+                    Material exclusivo para entregar a profesionales de la salud que están habilitados a prescribir y/o dispensar en Chile. Derechos reservados para GSK.<br>
+                    © 2026 Grupo de Compañías GSK. PM-CL-SGX-QST-260002 | Abril 2026
+                </div>
             </div>
         </div>
 
@@ -1021,17 +1077,19 @@
             <button class="btn btn-restart" onclick="restartTrivia()">Intentar de Nuevo</button>
 
             <div class="result-footer">
-                <strong>Información de seguridad Jemperli (dostarlimab).</strong><br><br>
-                <strong>¹</strong> Jemperli está contraindicada a Hipersensibilidad al principio activo o a cualquiera de los excipientes de la fórmula.<br><br>
-                <strong>Reacciones adversas:</strong> Muy frecuentes(≥ 1/10):Hipotiroidismo, Erupción, Piel seca, Pirexia, Aumento de la alanina aminotransferasa,Aumento de la aspartato aminotransferasa Frecuentes (≥1/100 a <1/10): Hipertiroidismo, Neumonitis, Colitis, Pancreatitis.<br><br>
-                Consulte la información para prescribir local para obtener una descripción completa de las contraindicaciones, los eventos adversos, las interacciones, las advertencias y precauciones especiales asociadas con el uso de Jemperli.<br><br>
-                <strong>Referencia:</strong> 1. Jemperli información para prescribir aprobada por ISP.<br><br>
-                La información completa para prescribir nuestros productos está a su disposición en nuestra página: <a href="http://www.gskpro.com/es-cl" target="_blank">http://www.gskpro.com/es-cl</a><br><br>
-                Más información de nuestros productos se encuentra disponible a través de nuestro Servicio de Información Médica en el correo electrónico: <strong>mila@gsk.com</strong><br><br>
-                Para reportar eventos adversos o quejas de producto por favor tome contacto con GSK por medio de: <strong>Teléfono:</strong> (56-2) 23829000 opción 4 o <strong>E-mail:</strong> <a href="mailto:farmacovigilancia.chile@gsk.com">farmacovigilancia.chile@gsk.com</a><br><br>
-                <strong>Dirección postal:</strong> GlaxoSmithKline Chile Ltda.: Av. Andrés Bello 2457 - Piso 20 (Oficinas 2001, 2003 y 2004), comuna de Providencia, ciudad de Santiago de Chile.<br><br>
-                Material exclusivo para entregar a profesionales de la salud que están habilitados a prescribir y/o dispensar en Chile. Derechos reservados para GSK.<br><br>
-                © 2026 Grupo de Compañías GSK. PM-CL-SGX-QST-260002 | Abril 2026
+                <div class="result-footer-content">
+                    <strong>Información de seguridad Jemperli (dostarlimab).</strong><br>
+                    <strong>¹</strong> Jemperli está contraindicada a Hipersensibilidad al principio activo o a cualquiera de los excipientes de la fórmula.<br>
+                    <strong>Reacciones adversas:</strong> Muy frecuentes(≥ 1/10):Hipotiroidismo, Erupción, Piel seca, Pirexia, Aumento de la alanina aminotransferasa,Aumento de la aspartato aminotransferasa Frecuentes (≥1/100 a <1/10): Hipertiroidismo, Neumonitis, Colitis, Pancreatitis.<br>
+                    Consulte la información para prescribir local para obtener una descripción completa de las contraindicaciones, los eventos adversos, las interacciones, las advertencias y precauciones especiales asociadas con el uso de Jemperli.<br>
+                    <strong>Referencia:</strong> 1. Jemperli información para prescribir aprobada por ISP.<br>
+                    La información completa para prescribir nuestros productos está a su disposición en nuestra página: <a href="http://www.gskpro.com/es-cl" target="_blank">http://www.gskpro.com/es-cl</a><br>
+                    Más información de nuestros productos se encuentra disponible a través de nuestro Servicio de Información Médica en el correo electrónico: <strong>mila@gsk.com</strong><br>
+                    Para reportar eventos adversos o quejas de producto por favor tome contacto con GSK por medio de: <strong>Teléfono:</strong> (56-2) 23829000 opción 4 o <strong>E-mail:</strong> <a href="mailto:farmacovigilancia.chile@gsk.com">farmacovigilancia.chile@gsk.com</a><br>
+                    <strong>Dirección postal:</strong> GlaxoSmithKline Chile Ltda.: Av. Andrés Bello 2457 - Piso 20 (Oficinas 2001, 2003 y 2004), comuna de Providencia, ciudad de Santiago de Chile.<br>
+                    Material exclusivo para entregar a profesionales de la salud que están habilitados a prescribir y/o dispensar en Chile. Derechos reservados para GSK.<br>
+                    © 2026 Grupo de Compañías GSK. PM-CL-SGX-QST-260002 | Abril 2026
+                </div>
             </div>
         </div>
     </div>
