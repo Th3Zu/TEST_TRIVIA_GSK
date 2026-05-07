@@ -532,6 +532,7 @@
             overflow-y: auto;
             display: flex;
             gap: 15px;
+            align-items: flex-start;
         }
 
         .footer-content {
@@ -542,20 +543,26 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-width: 120px;
+            justify-content: flex-start;
+            min-width: 130px;
             flex-shrink: 0;
         }
 
         .footer-qr img {
-            max-width: 120px;
-            height: auto;
+            max-width: 130px;
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
             margin-bottom: 8px;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
         }
 
         .footer-qr p {
             font-size: 8px;
             margin: 0;
+            line-height: 1.2;
         }
 
         .footer a {
@@ -884,70 +891,7 @@
             transform: scale(1.05);
         }
 
-        /* POPUP DE COMUNIDAD GSK */
-        .community-popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1001;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
 
-        .community-popup-overlay.active {
-            display: flex;
-        }
-
-        .community-popup-content {
-            background: white;
-            border-radius: 20px;
-            padding: 20px 20px;
-            max-width: 700px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideIn 0.3s ease;
-            text-align: center;
-        }
-
-        .community-popup-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 25px;
-            line-height: 1.4;
-        }
-
-        .community-popup-qr {
-            margin: 25px 0;
-        }
-
-        .community-popup-qr img {
-            max-width: 500px;
-            height: auto;
-        }
-
-        .community-popup-close {
-            background: #C81E78;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .community-popup-close:hover {
-            background: #D81E7E;
-            transform: scale(1.05);
-        }
 
         @media (max-aspect-ratio: 9/16) {
             .container {
@@ -1056,6 +1000,10 @@
                     Material exclusivo para entregar a profesionales de la salud que están habilitados a prescribir y/o dispensar en Chile. Derechos reservados para GSK.<br>
                     © 2026 Grupo de Compañías GSK. PM-CL-SGX-QST-260002 | Abril 2026
                 </div>
+                <div class="footer-qr">
+                    <img src="qr1.png" alt="QR Code" loading="lazy">
+                    <p>Escanee el código QR</p>
+                </div>
             </div>
         </div>
 
@@ -1073,17 +1021,6 @@
             <div class="question-text" id="questionText"></div>
 
             <div class="options" id="optionsContainer"></div>
-        </div>
-
-        <!-- POPUP DE COMUNIDAD GSK -->
-        <div id="communityPopup" class="community-popup-overlay">
-            <div class="community-popup-content">
-                <div class="community-popup-title"></div>
-                <div class="community-popup-qr">
-                    <img src="qr2.png" alt="QR Code" loading="lazy">
-                </div>
-                <button class="community-popup-close" onclick="closeCommunityPopup()">Cerrar</button>
-            </div>
         </div>
 
         <!-- PANTALLA DE RESULTADOS -->
@@ -1326,11 +1263,6 @@
 
             saveResult();
             displayResults();
-
-            // Mostrar popup de comunidad GSK después de 5 segundos
-            setTimeout(() => {
-                document.getElementById("communityPopup").classList.add("active");
-            }, 5000);
         }
 
         function saveResult() {
@@ -1380,17 +1312,12 @@
             score = 0;
             timeLeft = 60;
             document.getElementById("resultScreen").classList.remove("active");
-            document.getElementById("communityPopup").classList.remove("active");
             document.getElementById("startScreen").classList.add("active");
             document.getElementById("userName").value = "";
             document.getElementById("userName").focus();
             
             // Reactivar partículas
             isPaused = false;
-        }
-
-        function closeCommunityPopup() {
-            document.getElementById("communityPopup").classList.remove("active");
         }
 
         // ====================== PARTICLES BACKGROUND SYSTEM ======================
